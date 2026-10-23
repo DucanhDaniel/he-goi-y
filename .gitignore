@@ -11,3 +11,4 @@ wheels/
 
 # Dataset (tải tự động)
 data/
+.playwright-mcp/

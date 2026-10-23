@@ -1,0 +1,23 @@
+[client]
+toolbarMode = "viewer"
+
+[theme]
+base = "light"
+primaryColor = "#B45309"
+backgroundColor = "#F7F8FB"
+secondaryBackgroundColor = "#EEF1F6"
+textColor = "#0F172A"
+linkColor = "#1D4ED8"
+borderColor = "#E3E7EF"
+dataframeBorderColor = "#E3E7EF"
+dataframeHeaderBackgroundColor = "#F1F4F9"
+showWidgetBorder = true
+baseRadius = "10px"
+font = "Fira Sans:https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&display=swap"
+headingFont = "Fira Sans:https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&display=swap"
+codeFont = "Fira Code:https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap"
+chartCategoricalColors = ["#2563EB", "#D97706", "#059669", "#DC2626", "#7C3AED", "#94A3B8"]
+
+[theme.sidebar]
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F1F4F9"
