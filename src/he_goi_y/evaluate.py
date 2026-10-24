@@ -36,7 +36,8 @@ def evaluate(models, train, test, ds, k=K):
                 ae += np.abs(err).sum()
                 n += len(err)
             rel = set(g.loc[g["rating"] >= REL, "i"])
-            sc = np.array(m.rank_scores(h), dtype=float)
+            sc = m.rank_scores(h, user=u) if getattr(m, "uses_user_id", False) else m.rank_scores(h)
+            sc = np.array(sc, dtype=float)
             sc[list(h)] = -np.inf  # bỏ phim đã xem
             top = np.argpartition(-sc, k)[:k]
             top = top[np.argsort(-sc[top])]
@@ -68,14 +69,18 @@ def evaluate(models, train, test, ds, k=K):
 
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
+    deep = "--deep" in sys.argv  # thêm LightGCN, SASRec (cần PyTorch, nên có GPU)
     ds = data.load()
     train, test = data.temporal_split(ds.ratings)
     print(f"train={len(train)} test={len(test)} users={ds.n_users} items={ds.n_items}")
-    models = build_all(train, ds)
-    res = evaluate(models, train, test, ds)
     out = data.ROOT / "results"
     out.mkdir(exist_ok=True)
-    res.to_csv(out / "metrics.csv", index=False)
+    models = build_all(train, ds)
+    if deep:
+        from .deep import build_deep, load_best
+        models |= build_deep(train, ds, load_best(out / "best_deep.json"))
+    res = evaluate(models, train, test, ds)
+    res.to_csv(out / ("metrics_deep.csv" if deep else "metrics.csv"), index=False)
     json.dump({"train": len(train), "test": len(test), "k": K, "rel": REL},
               open(out / "meta.json", "w"))
     print(res.round(4).to_string(index=False))
